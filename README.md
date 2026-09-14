@@ -57,10 +57,10 @@ Open the URL shown by Streamlit, usually `http://localhost:8501`.
 - `frontend.py` - Streamlit interface and FAISS retrieval workflow
 - `app.py` - PDF loading, chunking, and local embedding setup
 - `rag_pipeline.py` - Formatting retrieved documents as context
-- `pdfs/` - Optional local PDF storage
+- `pdfs/` - Local user-uploaded PDFs; ignored by Git and never uploaded
 
 ## Notes
 
-- The included PDF must be a structurally valid PDF for `pdfplumber` to read it.
+- Uploaded PDFs must be structurally valid for `pdfplumber` to read them.
 - Large PDFs may take time to embed because the FAISS index is rebuilt when a search is submitted.
 - No API key or `.env` file is required.
