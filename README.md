@@ -12,7 +12,7 @@ User query -> local query embedding -> similarity search
                                              Relevant context
 ```
 
-This project stops at retrieval and context display. It does not call Groq, OpenAI, or any other internet API, and it does not generate an answer with a remote LLM.
+This project uses offline retrieval and extractive answer selection. It does not call Groq, OpenAI, or any other internet API, and it does not generate an answer with a remote LLM.
 
 ## Requirements
 
@@ -20,21 +20,29 @@ This project stops at retrieval and context display. It does not call Groq, Open
 - A valid, readable PDF file
 - The local embedding model `sentence-transformers/all-MiniLM-L6-v2`
 
-Install the dependencies in the project virtual environment:
+Create and activate a virtual environment, then install every project dependency:
 
 ```powershell
-pip install streamlit langchain-community langchain-text-splitters sentence-transformers faiss-cpu pdfplumber
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
 ```
 
-The embedding model must be available in the local Hugging Face cache before running offline. Download it once while internet access is available, then the application uses `local_files_only=True` and will not attempt a network request.
+The embedding model must be downloaded once while internet access is available. Run this after installing the requirements:
+
+```powershell
+python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
+```
+
+After that, the application uses the cached model with `local_files_only=True` and will not attempt a network request.
 
 ## Run
 
 Activate the virtual environment and start Streamlit:
 
 ```powershell
-.\.venv\Scripts\Activate.ps1
-streamlit run fronted.py
+\.\.venv\Scripts\Activate.ps1
+streamlit run frontend.py
 ```
 
 Open the URL shown by Streamlit, usually `http://localhost:8501`.
@@ -46,7 +54,7 @@ Open the URL shown by Streamlit, usually `http://localhost:8501`.
 
 ## Project Files
 
-- `fronted.py` - Streamlit interface and FAISS retrieval workflow
+- `frontend.py` - Streamlit interface and FAISS retrieval workflow
 - `app.py` - PDF loading, chunking, and local embedding setup
 - `rag_pipeline.py` - Formatting retrieved documents as context
 - `pdfs/` - Optional local PDF storage
